@@ -1,97 +1,22 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="es">
-
 <head>
     <meta charset="UTF-8">
     <title>Planetarium AI</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body { font-family: Arial, sans-serif; background-color: #111; color: #eee; padding: 2em; text-align: center; }
+        input, button { padding: 10px; font-size: 1em; }
+        .respuesta { margin-top: 20px; font-size: 1.2em; color: #0f0; }
+    </style>
 </head>
-
-<body class="bg-dark text-light">
-
-    <div class="container py-5">
-        <h1 class="text-center mb-4">🌌 Planetarium AI</h1>
-
-        <div class="card bg-secondary text-light mb-4">
-            <div class="card-body">
-                <form method="POST">
-                    <div class="mb-3">
-                        <label for="consulta" class="form-label">Tipo de consulta</label>
-                        <select name="consulta" id="consulta" class="form-select" onchange="this.form.submit()">
-                            <option value="">-- Selecciona --</option>
-                            <option value="nombre" {{ 'selected' if consulta=='nombre' }}>Buscar por nombre</option>
-                            <option value="tipo" {{ 'selected' if consulta=='tipo' }}>Buscar por tipo</option>
-                            <option value="lunas" {{ 'selected' if consulta=='lunas' }}>Planetas con más de X lunas
-                            </option>
-                            <option value="comparar" {{ 'selected' if consulta=='comparar' }}>Comparar lunas entre dos
-                                planetas</option>
-                        </select>
-                    </div>
-
-                    {% if consulta == 'nombre' %}
-                    <div class="mb-3">
-                        <label class="form-label">Nombre del planeta</label>
-                        <input type="text" name="nombre" class="form-control" required>
-                    </div>
-                    {% elif consulta == 'tipo' %}
-                    <div class="mb-3">
-                        <label class="form-label">Tipo de planeta (rocoso, gaseoso)</label>
-                        <input type="text" name="tipo" class="form-control" required>
-                    </div>
-                    {% elif consulta == 'lunas' %}
-                    <div class="mb-3">
-                        <label class="form-label">Cantidad mínima de lunas</label>
-                        <input type="number" name="minimo_lunas" class="form-control" required>
-                    </div>
-                    {% elif consulta == 'comparar' %}
-                    <div class="mb-3">
-                        <label class="form-label">Planeta 1</label>
-                        <input type="text" name="planeta1" class="form-control" required>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">Planeta 2</label>
-                        <input type="text" name="planeta2" class="form-control" required>
-                    </div>
-                    {% endif %}
-
-                    {% if consulta %}
-                    <button type="submit" class="btn btn-light w-100">Consultar</button>
-                    {% endif %}
-                </form>
-            </div>
-        </div>
-
-        {% if resultado %}
-        <div class="alert alert-info mt-4">
-            <h5 class="alert-heading">🪐 Resultado:</h5>
-
-            {% if resultado is string %}
-            <p>{{ resultado }}</p>
-
-            {% elif resultado is mapping %}
-            <div>
-                <strong>🌍 Nombre:</strong> {{ resultado["nombre"] }}<br>
-                <strong>🔹 Tipo:</strong> {{ resultado["tipo"] }}<br>
-                <strong>🌕 Lunas:</strong> {{ resultado["lunas"] }}<br>
-                <strong>⭕ Anillos:</strong> {{ 'Sí' if resultado["anillos"] else 'No' }}
-            </div>
-
-            {% elif resultado is iterable %}
-            {% for planeta in resultado %}
-            <div class="mb-3">
-                <strong>🌍 Nombre:</strong> {{ planeta["nombre"] }}<br>
-                <strong>🔹 Tipo:</strong> {{ planeta["tipo"] }}<br>
-                <strong>🌕 Lunas:</strong> {{ planeta["lunas"] }}<br>
-                <strong>⭕ Anillos:</strong> {{ 'Sí' if planeta["anillos"] else 'No' }}
-            </div>
-            <hr>
-            {% endfor %}
-            {% endif %}
-        </div>
-        {% endif %}
-
-    </div>
-
+<body>
+    <h1>🪐 Planetarium AI</h1>
+    <form method="post">
+        <input type="text" name="pregunta" placeholder="Haz una pregunta sobre el espacio..." size="50">
+        <button type="submit">Preguntar</button>
+    </form>
+    {% if respuesta %}
+    <div class="respuesta">{{ respuesta }}</div>
+    {% endif %}
 </body>
-
 </html>
